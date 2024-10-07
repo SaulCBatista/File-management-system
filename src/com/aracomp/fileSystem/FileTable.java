@@ -4,18 +4,20 @@ import java.util.ArrayList;
 
 public class FileTable {
 	private ArrayList<File> files;
+	private Disk disk;
 
-	public FileTable() {
+	public FileTable(Disk disk) {
+		this.disk = disk;
 	}
 
-	public File read(String name) {
+	public String read(String name) {
 		File fileFound = files.stream().filter(file -> file.getName().equals(name)).findFirst().orElse(null);
 
 		if (fileFound.equals(null)) {
 			System.out.println("File not found");
 		}
 		
-		return fileFound;
+		return disk.read(fileFound);
 	}
 
 	public void add(String name, String content) {
@@ -25,7 +27,9 @@ public class FileTable {
 		}
 
 		int size = content.length();
-		File file = new File(name, size, null);
+		int address = disk.add(content, size);
+		
+		File file = new File(name, size, address);
 		
 		this.files.add(file);
 	}
