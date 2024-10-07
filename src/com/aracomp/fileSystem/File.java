@@ -3,9 +3,9 @@ package com.aracomp.fileSystem;
 public class File {
 	private String name;
 	private int size;
-	private String address;
+	private int address;
 
-	public File(String name, int size, String address) {
+	public File(String name, int size, int address) {
 		this.name = name;
 		this.size = size;
 		this.address = address;
@@ -27,11 +27,11 @@ public class File {
 		this.size = size;
 	}
 
-	public String getAddress() {
+	public int getAddress() {
 		return this.address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(int address) {
 		this.address = address;
 	}
 }

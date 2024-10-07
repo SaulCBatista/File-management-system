@@ -2,11 +2,11 @@ package com.aracomp.fileSystem;
 
 public class Block {
 	private char data;
-	private int pointer;
+	private int next;
 
-	public Block(char data, int pointer) {
+	public Block(char data, int next) {
 		this.data = data;
-		this.pointer = pointer;
+		this.next = next;
 	}
 
 	public char getData() {
@@ -17,11 +17,11 @@ public class Block {
 		this.data = data;
 	}
 
-	public int getPointer() {
-		return this.pointer;
+	public int getNext() {
+		return this.next;
 	}
 
-	public void setPointer(int pointer) {
-		this.pointer = pointer;
+	public void setNext(int next) {
+		this.next = next;
 	}
 }
