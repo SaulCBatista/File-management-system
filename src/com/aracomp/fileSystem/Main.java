@@ -4,14 +4,16 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Disk disk = new Disk(32);
+        Disk disk = new Disk(15);
 
         FileTable fileTable = new FileTable(disk);
 
 
         fileTable.add("file1.txt", "Hello, World!");
+        System.out.println(fileTable.toString());
+        System.out.println(disk.toString());
 
-
+        disk.delete(0);
         System.out.println(fileTable.toString());
         System.out.println(disk.toString());
 

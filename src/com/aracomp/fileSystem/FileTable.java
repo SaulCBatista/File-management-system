@@ -1,41 +1,37 @@
 package com.aracomp.fileSystem;
+
 import java.util.ArrayList;
 
 public class FileTable {
 	private ArrayList<File> files;
-	private Disk disk;
 
-	public FileTable(Disk disk) {
-		this.disk = disk;
+	public FileTable() {
 		this.files = new ArrayList<>();
 	}
 
-	public String read(String name) {
+	public int search(String name) {
 		File fileFound = files.stream().filter(file -> file.getName().equals(name)).findFirst().orElse(null);
 
 		if (fileFound.equals(null)) {
 			System.out.println("File not found");
 		}
 		
-		return disk.read(fileFound);
+    	return files.indexOf(fileFound);
 	}
 
-	public void add(String name, String content) {
+	public void add(String name, int size, int address) {
 		if (name.isEmpty()) {
 			System.out.println("File's name can't empty");
 			return;
 		}
-
-		int size = content.length();
-		int address = disk.add(content, size);
 		
 		File file = new File(name, size, address);
 		
 		this.files.add(file);
 	}
 	
-	public void delete(String name) {
-		files.removeIf(file -> file.getName().equals(name));
+	public void delete(int index) {
+		this.files.remove(index);
 	}
 
 	@Override

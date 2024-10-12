@@ -56,7 +56,17 @@ public class Disk {
 	}
 
 	public void delete(int address) {		
-		// TODO Gerenciamento de memória livre e realocação de dados
+		int currentBlockIndex = address;
+		Block currentBlock = null;
+
+		while (currentBlockIndex != -1) {
+			currentBlock = storage[currentBlockIndex];
+			currentBlock.setData('\0');
+			currentBlockIndex = currentBlock.getNext();
+		}
+		currentBlock.setNext(this.refEmptyBlock);
+		//this.availableSize++; // this.availableSize = SizeFile
+
 	}
 
 	@Override
