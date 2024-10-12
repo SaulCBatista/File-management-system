@@ -3,13 +3,11 @@ package com.aracomp.fileSystem;
 public class Disk {
 	private Block[] storage;
 	private int totalSize;
-	private int availableSize;
 	private int refEmptyBlock;
 	
 	public Disk(int size) {
 		this.storage = new Block[size];
 		this.totalSize = size;
-		this.availableSize = size;
 		this.refEmptyBlock = 0;
 
 		for (int i = 0; i < size - 1; i++) {
@@ -60,6 +58,10 @@ public class Disk {
 			currentBlockIndex = currentBlock.getNext();
 		}
 		currentBlock.setNext(this.refEmptyBlock);
+	}
+
+	public int getTotalSize() {
+		return this.totalSize;
 	}
 
 	@Override

@@ -9,14 +9,15 @@ public class FileTable {
 		this.files = new ArrayList<>();
 	}
 
-	public int search(String name) {
+	public File search(String name) {
+		
 		File fileFound = files.stream().filter(file -> file.getName().equals(name)).findFirst().orElse(null);
 
 		if (fileFound.equals(null)) {
 			System.out.println("File not found");
 		}
 		
-    	return files.indexOf(fileFound);
+    	return fileFound;
 	}
 
 	public void add(String name, int size, int address) {
@@ -30,8 +31,8 @@ public class FileTable {
 		this.files.add(file);
 	}
 	
-	public void delete(int index) {
-		this.files.remove(index);
+	public void delete(String name) {
+		files.removeIf(file -> file.getName().equals(name));
 	}
 
 	@Override
