@@ -16,14 +16,14 @@ public class Disk {
             this.storage[i] = new Block('\0', i + 1); 
         }
 
-        this.storage[size - 1] = new Block('\0', 0);
+        this.storage[size - 1] = new Block('\0', -1);
 	}
 	
-	public String read(File file) {
-		int currentBlockIndex = file.getAddress();
+	public String read(int address) {
+		int currentBlockIndex = address;
 		StringBuilder content = new StringBuilder();
 		
-		for(int i = 0; i < file.getSize(); i++) {
+		while (currentBlockIndex != -1) {
 			Block currentBlock = storage[currentBlockIndex];
 			content.append(currentBlock.getData());
 			currentBlockIndex = currentBlock.getNext();
@@ -32,21 +32,16 @@ public class Disk {
 		return content.toString();
 	}
 	
-	public int add(String content, int contentSize) {
+	public int add(String content) {
 
 		int refBlock = this.refEmptyBlock;
 		int startingBlockIndex;
 		Block currentBlock = null;
-	
-		if (contentSize > availableSize) {
-			System.out.println("Storage's size is not enough");
-			return -1;
-		}
 
 		startingBlockIndex = refBlock;
-		for (int i = 0; i < contentSize; i++) {
+		for (char ch : content.toCharArray()) {
 			currentBlock = storage[refBlock];
-			currentBlock.setData(content.charAt(i));
+			currentBlock.setData(ch);
 			refBlock = currentBlock.getNext();
 		}
 
@@ -65,8 +60,6 @@ public class Disk {
 			currentBlockIndex = currentBlock.getNext();
 		}
 		currentBlock.setNext(this.refEmptyBlock);
-		//this.availableSize++; // this.availableSize = SizeFile
-
 	}
 
 	@Override

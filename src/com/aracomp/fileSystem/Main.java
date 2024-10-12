@@ -6,15 +6,12 @@ public class Main {
 
         Disk disk = new Disk(15);
 
-        FileTable fileTable = new FileTable(disk);
-
-
-        fileTable.add("file1.txt", "Hello, World!");
-        System.out.println(fileTable.toString());
+        disk.add("Hello, World!");
         System.out.println(disk.toString());
 
+        System.out.println(disk.read(0));
+
         disk.delete(0);
-        System.out.println(fileTable.toString());
         System.out.println(disk.toString());
 
 
