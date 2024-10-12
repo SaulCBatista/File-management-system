@@ -36,6 +36,7 @@ public class Disk {
 
 		int refBlock = this.refEmptyBlock;
 		int startingBlockIndex;
+		Block currentBlock = null;
 	
 		if (contentSize > availableSize) {
 			System.out.println("Storage's size is not enough");
@@ -43,18 +44,18 @@ public class Disk {
 		}
 
 		startingBlockIndex = refBlock;
-	
 		for (int i = 0; i < contentSize; i++) {
-			Block currentBlock = storage[refBlock];
+			currentBlock = storage[refBlock];
 			currentBlock.setData(content.charAt(i));
 			refBlock = currentBlock.getNext();
 		}
+
+		currentBlock.setNext(-1);
 	
 		return startingBlockIndex;
 	}
-	
-	
-	public void delete(int address) {
+
+	public void delete(int address) {		
 		// TODO Gerenciamento de memória livre e realocação de dados
 	}
 
