@@ -40,8 +40,6 @@ public class DiskManager {
 
         this.diskAvailableSize = this.diskAvailableSize - contentSize;
 
-        System.out.println(this.diskAvailableSize);
-
 	}
 
     public String read(String name) {
@@ -63,8 +61,6 @@ public class DiskManager {
         this.fileTable.delete(name);
 
         this.diskAvailableSize = this.diskAvailableSize + file.getSize();
-
-        System.out.println(this.diskAvailableSize);
 
 	}
 

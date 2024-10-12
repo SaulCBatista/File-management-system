@@ -43,7 +43,9 @@ public class Disk {
 			refBlock = currentBlock.getNext();
 		}
 
+		this.refEmptyBlock = refBlock;
 		currentBlock.setNext(-1);
+		
 	
 		return startingBlockIndex;
 	}
@@ -58,6 +60,8 @@ public class Disk {
 			currentBlockIndex = currentBlock.getNext();
 		}
 		currentBlock.setNext(this.refEmptyBlock);
+		this.refEmptyBlock = address;
+
 	}
 
 	public int getTotalSize() {
