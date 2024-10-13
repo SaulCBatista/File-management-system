@@ -10,7 +10,18 @@ public class Main {
         List<String> methodsToRun = List.of(
             "addFile", 
             "addMultipleFiles",
-            "readFile"
+            "addFilesToDiskLimit",
+            "addAboveDiskLimit", 
+            "addDiskFill",
+            "addDuplicateFile",
+            "readFile", 
+            "readMultipleFiles",
+            "readAllFiles",
+            "readNonExistentFile", 
+            "deleteFile",
+            "deleteMultipleFiles",
+            "deleteAllFiles",
+            "deleteNonExistentFile"
         );
 
 

@@ -71,8 +71,8 @@ public class Teste {
 
     public void addDuplicateFile() {
         this.description = "Tenta adicionar um arquivo que já existe no sistema de arquivos.";
-        diskManager.add("file1", "content1"); 
-        diskManager.add("file1", "content1"); 
+        diskManager.add("file1", "cont1"); 
+        diskManager.add("file1", "cont2"); 
     }
 
     public void readFile() {
