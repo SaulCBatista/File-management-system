@@ -3,12 +3,11 @@ package com.aracomp.fileSystem;
 public class Disk {
 	private Block[] storage;
 	private int totalSize;
-	private int refEmptyBlock;
+	private DiskManager diskManager;
 	
 	public Disk(int size) {
 		this.storage = new Block[size];
 		this.totalSize = size;
-		this.refEmptyBlock = 0;
 
 		for (int i = 0; i < size - 1; i++) {
             this.storage[i] = new Block('\0', i + 1); 
@@ -16,6 +15,11 @@ public class Disk {
 
         this.storage[size - 1] = new Block('\0', -1);
 	}
+
+	public void setDiskManager(DiskManager diskManager) {
+        this.diskManager = diskManager; 
+		this.diskManager.setRefEmptyBlock(0);
+    }
 	
 	public String read(int address) {
 		int currentBlockIndex = address;
@@ -32,7 +36,7 @@ public class Disk {
 	
 	public int add(String content) {
 
-		int refBlock = this.refEmptyBlock;
+		int refBlock = diskManager.getRefEmptyBlock();
 		int startingBlockIndex;
 		Block currentBlock = null;
 
@@ -43,7 +47,7 @@ public class Disk {
 			refBlock = currentBlock.getNext();
 		}
 
-		this.refEmptyBlock = refBlock;
+		diskManager.setRefEmptyBlock(refBlock);
 		currentBlock.setNext(-1);
 		
 	
@@ -59,8 +63,8 @@ public class Disk {
 			currentBlock.setData('\0');
 			currentBlockIndex = currentBlock.getNext();
 		}
-		currentBlock.setNext(this.refEmptyBlock);
-		this.refEmptyBlock = address;
+		currentBlock.setNext(diskManager.getRefEmptyBlock());
+		diskManager.setRefEmptyBlock(address);
 
 	}
 

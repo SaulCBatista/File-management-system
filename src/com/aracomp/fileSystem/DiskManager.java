@@ -5,6 +5,7 @@ public class DiskManager {
     private int diskAvailableSize;
     private Disk disk;
     private FileTable fileTable;
+    private int refEmptyBlock;
     
     public DiskManager(Disk disk) {
         this.disk = disk;
@@ -12,7 +13,6 @@ public class DiskManager {
         diskAvailableSize = disk.getTotalSize();
 
 	}
-
 
     public void add(String name, String content) {
 
@@ -64,6 +64,13 @@ public class DiskManager {
 
 	}
 
+    public int getRefEmptyBlock() {
+        return refEmptyBlock;
+    }
+
+    public void setRefEmptyBlock(int refEmptyBlock) {
+        this.refEmptyBlock = refEmptyBlock;
+    }
 
     @Override
     public String toString() {

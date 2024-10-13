@@ -7,6 +7,8 @@ public class Main {
 
         DiskManager diskManager = new DiskManager(disk);
 
+        disk.setDiskManager(diskManager);
+
         diskManager.add("File1", "12");
         diskManager.add("File2", "34");
         diskManager.add("File3", "5");
