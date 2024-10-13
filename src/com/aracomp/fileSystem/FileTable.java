@@ -2,6 +2,8 @@ package com.aracomp.fileSystem;
 
 import java.util.ArrayList;
 
+import com.aracomp.fileSystem.exception.FileNotFoundException;
+
 public class FileTable {
 	private ArrayList<File> files;
 
@@ -11,21 +13,12 @@ public class FileTable {
 
 	public File search(String name) {
 		
-		File fileFound = files.stream().filter(file -> file.getName().equals(name)).findFirst().orElse(null);
-
-		if (fileFound.equals(null)) {
-			System.out.println("File not found");
-		}
+		File fileFound = files.stream().filter(file -> file.getName().equals(name)).findFirst().orElseThrow(FileNotFoundException::new);
 		
     	return fileFound;
 	}
 
 	public void add(String name, int size, int address) {
-		if (name.isEmpty()) {
-			System.out.println("File's name can't empty");
-			return;
-		}
-		
 		File file = new File(name, size, address);
 		
 		this.files.add(file);

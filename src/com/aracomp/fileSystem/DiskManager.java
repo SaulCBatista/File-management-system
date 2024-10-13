@@ -1,5 +1,8 @@
 package com.aracomp.fileSystem;
 
+import com.aracomp.fileSystem.exception.InvalidOperationException;
+import com.aracomp.fileSystem.exception.SizeUnenoughException;
+
 public class DiskManager {
 
     private int diskAvailableSize;
@@ -17,21 +20,18 @@ public class DiskManager {
     public void add(String name, String content) {
 
 		if (name.isEmpty()) {
-			System.out.println("File's name can't empty");
-			return ;
+			throw new InvalidOperationException("File's name can't be empty");
 		}
 
         if (content.isEmpty()) {
-			System.out.println("File's content can't empty");
-			return ;
+			throw new InvalidOperationException("File's content can't be empty");
 		}
 
         int contentSize = content.length();
 
     
         if (contentSize > this.diskAvailableSize) {
-            System.out.println("Storage's size is not enough");
-            return ;
+            throw new SizeUnenoughException("storage's size unenough");
         }
         
         int address = this.disk.add(content);
