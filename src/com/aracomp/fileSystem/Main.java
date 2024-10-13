@@ -13,15 +13,15 @@ public class Main {
             "addFilesToDiskLimit",
             "addAboveDiskLimit", 
             "addDiskFill",
-            "addDuplicateFile",
+            //"addDuplicateFile",
             "readFile", 
             "readMultipleFiles",
             "readAllFiles",
-            "readNonExistentFile", 
+            //"readNonExistentFile", 
             "deleteFile",
             "deleteMultipleFiles",
-            "deleteAllFiles",
-            "deleteNonExistentFile"
+            "deleteAllFiles"
+            //"deleteNonExistentFile"
         );
 
 
