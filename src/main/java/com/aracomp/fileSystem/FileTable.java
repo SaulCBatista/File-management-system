@@ -2,6 +2,8 @@ package com.aracomp.fileSystem;
 
 import java.util.ArrayList;
 
+import com.aracomp.exception.InvalidOperationException;
+
 public class FileTable {
 	private ArrayList<File> files;
 
@@ -13,20 +15,21 @@ public class FileTable {
 		
 		File fileFound = files.stream().filter(file -> file.getName().equals(name)).findFirst().orElse(null);
 
-		if (fileFound.equals(null)) {
-			System.out.println("File not found");
-		}
-		
     	return fileFound;
 	}
 
 	public void add(String name, int size, int address) {
 		if (name.isEmpty()) {
-			System.out.println("File's name can't empty");
-			return;
+			throw new InvalidOperationException("File's name cannot be empty");
 		}
 		
-		File file = new File(name, size, address);
+		File file = this.search(name);
+		
+		if (file != null) {
+			throw new InvalidOperationException("File's name already exists");
+		}
+		
+		file = new File(name, size, address);
 		
 		this.files.add(file);
 	}

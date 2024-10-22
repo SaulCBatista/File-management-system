@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aracomp.exception.InvalidOperationException;
+import com.aracomp.exception.StorageUnenoughException;
 import com.aracomp.fileSystem.Disk;
 import com.aracomp.fileSystem.DiskManager;
 import com.googlecode.lanterna.TerminalSize;
@@ -100,8 +102,8 @@ public class InitialScreen {
 					fileTable.getTableModel().addRow(fileName);
 					fileList.add(fileName);
 					showMessage("Arquivo Adicionado", "Arquivo " + fileName + " adicionado com sucesso!", screen);
-				} catch (Exception e) {
-					showMessage("Erro", "Operação invalida ao adicionar arquivo", screen);
+				} catch (InvalidOperationException | StorageUnenoughException e) {
+					showMessage("Erro", e.getMessage(), screen);
 				}
 			});
 			mainPanel.addComponent(addButton, GridLayout.createLayoutData(GridLayout.Alignment.CENTER,
