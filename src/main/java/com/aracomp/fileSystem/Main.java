@@ -1,7 +1,5 @@
 package com.aracomp.fileSystem;
 
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
 /*
@@ -26,7 +24,7 @@ public class Main {
 
         teste.execute(methodsToRun);
 */
-
+/*
         Disk disk = new Disk(7);
 
         DiskManager diskManager = new DiskManager(disk);
@@ -52,6 +50,6 @@ public class Main {
         diskManager.delete("File5");
 
         System.out.println(diskManager.toString());
-
+*/
     }
 }
