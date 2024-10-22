@@ -26,112 +26,124 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 
 public class InitialScreen {
 
-	private static List<String> fileList = new ArrayList<>();
-	private static Disk disk = new Disk(32);
-	private static DiskManager diskManager = new DiskManager(disk);
+    private List<String> fileList = new ArrayList<>();
+    private Disk disk = new Disk(32);
+    private DiskManager diskManager = new DiskManager(disk);
 
-	public static void main(String[] args) {
-		DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
-		disk.setDiskManager(diskManager);
+    public InitialScreen() {
+        disk.setDiskManager(diskManager);
+    }
 
-		try {
-			Screen screen = terminalFactory.createScreen();
-			screen.startScreen();
+    public void start() {
+        DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
 
-			Panel mainPanel = new Panel();
-			mainPanel.setLayoutManager(new GridLayout(2));
+        try {
+            Screen screen = terminalFactory.createScreen();
+            screen.startScreen();
 
-			Label title = new Label("Sistemas de Arquivos").setForegroundColor(TextColor.ANSI.WHITE)
-					.setBackgroundColor(TextColor.ANSI.BLUE);
-			title.setPreferredSize(new TerminalSize(40, 2));
-			mainPanel.addComponent(title, GridLayout.createLayoutData(GridLayout.Alignment.CENTER,
-					GridLayout.Alignment.CENTER, true, false, 2, 1));
+            Panel mainPanel = new Panel();
+            mainPanel.setLayoutManager(new GridLayout(2));
 
-			Table<String> fileTable = new Table<>("Arquivos");
-			fileTable.setPreferredSize(new TerminalSize(40, 10));
+            Label title = new Label("Sistemas de Arquivos").setForegroundColor(TextColor.ANSI.WHITE)
+                    .setBackgroundColor(TextColor.ANSI.BLUE);
+            title.setPreferredSize(new TerminalSize(40, 2));
+            mainPanel.addComponent(title, GridLayout.createLayoutData(GridLayout.Alignment.CENTER,
+                    GridLayout.Alignment.CENTER, true, false, 2, 1));
 
-			fileTable.setSelectAction(() -> {
-				List<String> selectedFile = fileTable.getTableModel().getRow(fileTable.getSelectedRow());
+            Table<String> fileTable = new Table<>("Arquivos");
+            fileTable.setPreferredSize(new TerminalSize(40, 10));
 
-				String fileName = selectedFile.get(0);
+            fileTable.setSelectAction(() -> {
+                List<String> selectedFile = fileTable.getTableModel().getRow(fileTable.getSelectedRow());
 
-				Panel dialogPanel = new Panel(new GridLayout(4));
+                String fileName = selectedFile.get(0);
 
-				dialogPanel.addComponent(new Label("Escolha uma ação para o arquivo \"" + fileName + "\"."));
+                Panel dialogPanel = new Panel(new GridLayout(4));
 
-				BasicWindow actionWindow = new BasicWindow("Escolher Ação");
+                dialogPanel.addComponent(new Label("Escolha uma ação para o arquivo \"" + fileName + "\"."));
 
-				Button readButton = new Button("Ler", () -> {
-					String fileContent = diskManager.read(fileName);
-					showMessage("Conteúdo do Arquivo", "Conteúdo de " + fileName + ": \n" + fileContent, screen);
-				});
+                BasicWindow actionWindow = new BasicWindow("Escolher Ação");
 
-				Button deleteButton = new Button("Apagar", () -> {
-					diskManager.delete(fileName);
+                Button readButton = new Button("Ler", () -> {
+                    String fileContent = diskManager.read(fileName);
+                    showMessage("Conteúdo do Arquivo", "Conteúdo de " + fileName + ": \n" + fileContent, screen);
+                });
 
-					int selectedIndex = fileTable.getSelectedRow();
-					fileTable.getTableModel().removeRow(selectedIndex);
+                Button deleteButton = new Button("Apagar", () -> {
+                    diskManager.delete(fileName);
 
-					showMessage("Arquivo Apagado", "O arquivo \"" + fileName + "\" foi apagado com sucesso.", screen);
-					actionWindow.close();
-				});
+                    int selectedIndex = fileTable.getSelectedRow();
+                    fileTable.getTableModel().removeRow(selectedIndex);
 
-				Button backButton = new Button("Voltar", () -> {
-					actionWindow.close();
-				});
+                    showMessage("Arquivo Apagado", "O arquivo \"" + fileName + "\" foi apagado com sucesso.", screen);
+                    actionWindow.close();
+                });
 
-				dialogPanel.addComponent(readButton);
-				dialogPanel.addComponent(deleteButton);
-				dialogPanel.addComponent(backButton);
+                Button backButton = new Button("Voltar", () -> {
+                    actionWindow.close();
+                });
 
-				actionWindow.setComponent(dialogPanel);
+                dialogPanel.addComponent(readButton);
+                dialogPanel.addComponent(deleteButton);
+                dialogPanel.addComponent(backButton);
 
-				new MultiWindowTextGUI(screen).addWindowAndWait(actionWindow);
-			});
+                actionWindow.setComponent(dialogPanel);
 
-			mainPanel.addComponent(fileTable, GridLayout.createLayoutData(GridLayout.Alignment.FILL,
-					GridLayout.Alignment.FILL, true, true, 2, 1));
+                new MultiWindowTextGUI(screen).addWindowAndWait(actionWindow);
+            });
 
-			Button addButton = new Button("Adicionar Arquivo", () -> {
-				try {
-					String fileName = TextInputDialog.showDialog(new MultiWindowTextGUI(screen), "Adicionar Arquivo",
-							"Digite o nome do arquivo:", "");
-					String fileContent = TextInputDialog.showDialog(new MultiWindowTextGUI(screen),
-							"Adicionar Conteúdo", "Digite o conteúdo do arquivo:", "");
-					diskManager.add(fileName, fileContent);
-					fileTable.getTableModel().addRow(fileName);
-					fileList.add(fileName);
-					showMessage("Arquivo Adicionado", "Arquivo " + fileName + " adicionado com sucesso!", screen);
-				} catch (InvalidOperationException | StorageUnenoughException e) {
-					showMessage("Erro", e.getMessage(), screen);
-				}
-			});
-			mainPanel.addComponent(addButton, GridLayout.createLayoutData(GridLayout.Alignment.CENTER,
-					GridLayout.Alignment.CENTER, true, false, 2, 1));
+            mainPanel.addComponent(fileTable, GridLayout.createLayoutData(GridLayout.Alignment.FILL,
+                    GridLayout.Alignment.FILL, true, true, 2, 1));
 
-			Button exitButton = new Button("Sair", () -> {
-				System.out.println("Encerrando aplicação...");
-				try {
-					screen.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
-			mainPanel.addComponent(exitButton, GridLayout.createLayoutData(GridLayout.Alignment.CENTER,
-					GridLayout.Alignment.CENTER, true, false, 2, 1));
+            Button addButton = new Button("Adicionar Arquivo", () -> {
+                try {
+                    String fileName = TextInputDialog.showDialog(new MultiWindowTextGUI(screen), "Adicionar Arquivo",
+                            "Digite o nome do arquivo:", "");
+                    String fileContent = TextInputDialog.showDialog(new MultiWindowTextGUI(screen),
+                            "Adicionar Conteúdo", "Digite o conteúdo do arquivo:", "");
+                    diskManager.add(fileName, fileContent);
+                    fileTable.getTableModel().addRow(fileName);
+                    fileList.add(fileName);
+                    showMessage("Arquivo Adicionado", "Arquivo " + fileName + " adicionado com sucesso!", screen);
+                } catch (InvalidOperationException | StorageUnenoughException e) {
+                    showMessage("Erro", e.getMessage(), screen);
+                }
+            });
+            mainPanel.addComponent(addButton, GridLayout.createLayoutData(GridLayout.Alignment.CENTER,
+                    GridLayout.Alignment.CENTER, true, false, 2, 1));
 
-			WindowBasedTextGUI gui = new MultiWindowTextGUI(screen);
-			BasicWindow window = new BasicWindow();
-			window.setComponent(mainPanel);
+            Button showStructureButton = new Button("Mostrar estrutura", () -> {
+                try {
+                    System.out.println(diskManager.showStructure());
+                } catch (Exception e) {
+                    showMessage("Erro", "Não foi possível visualizar a estrutura " + e.getMessage(), screen);
+                }
+            });
+            mainPanel.addComponent(showStructureButton, GridLayout.createLayoutData(GridLayout.Alignment.CENTER,
+                    GridLayout.Alignment.CENTER, true, false, 2, 1));
 
-			gui.addWindowAndWait(window);
+            Button exitButton = new Button("Sair", () -> {
+                try {
+                    screen.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            mainPanel.addComponent(exitButton, GridLayout.createLayoutData(GridLayout.Alignment.CENTER,
+                    GridLayout.Alignment.CENTER, true, false, 2, 1));
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+            WindowBasedTextGUI gui = new MultiWindowTextGUI(screen);
+            BasicWindow window = new BasicWindow();
+            window.setComponent(mainPanel);
 
-	private static void showMessage(String title, String message, Screen screen) {
-		MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), title, message, MessageDialogButton.OK);
-	}
+            gui.addWindowAndWait(window);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showMessage(String title, String message, Screen screen) {
+        MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), title, message, MessageDialogButton.OK);
+    }
 }

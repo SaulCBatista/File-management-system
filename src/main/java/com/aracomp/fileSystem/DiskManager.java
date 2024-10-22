@@ -20,12 +20,11 @@ public class DiskManager {
 	}
 
     public void add(String name, String content) {
-
-		if (name.isEmpty()) {
+		if (name == null || name.isEmpty()) {
 			throw new InvalidOperationException("File's name cannot be empty");
 		}
 
-        if (content.isEmpty()) {
+        if (content == null || content.isEmpty()) {
 			throw new InvalidOperationException("File's content cannot be empty");
 		}
 
@@ -70,6 +69,14 @@ public class DiskManager {
         this.diskAvailableSize = this.diskAvailableSize + file.getSize();
 
 	}
+    
+    public String showStructure() {
+    	StringBuilder sb = new StringBuilder();
+        sb.append(this.fileTable.toString());
+        sb.append("\n");
+        sb.append(this.disk.toString());
+        return sb.toString();
+    }
 
     public int getRefEmptyBlock() {
         return refEmptyBlock;
@@ -78,17 +85,5 @@ public class DiskManager {
     public void setRefEmptyBlock(int refEmptyBlock) {
         this.refEmptyBlock = refEmptyBlock;
     }
-
-    @Override
-    public String toString() {
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.fileTable.toString());
-        sb.append("\n");
-        sb.append(this.disk.toString());
-        return sb.toString();
-        
-    }
-    
 
 }
