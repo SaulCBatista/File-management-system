@@ -78,7 +78,11 @@ public class Disk {
         sb.append("Disk Blocks:\n");
         for (int i = 0; i < totalSize; i++) {
             sb.append("Block ").append(i).append(": ");
-            sb.append("[Data: '").append(storage[i].getData()).append("', ");
+            if (storage[i].getData() == '\0') {
+            	sb.append("[Data: ").append("");
+            } else {
+            	sb.append("[Data: '").append(storage[i].getData()).append("', ");
+            }
             sb.append("Next: ").append(storage[i].getNext()).append("]\n");
         }
         return sb.toString();

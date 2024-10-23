@@ -16,6 +16,7 @@ import com.googlecode.lanterna.gui2.GridLayout;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.TextBox;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
@@ -114,7 +115,24 @@ public class InitialScreen {
 
             Button showStructureButton = new Button("Mostrar estrutura", () -> {
                 try {
-                    System.out.println(diskManager.showStructure());
+                    String diskStructure = diskManager.showStructure();
+                    TextBox textBox = new TextBox(new TerminalSize(60, 20))
+                            .setReadOnly(true)
+                            .setText(diskStructure);
+
+                    BasicWindow structureWindow = new BasicWindow("Estrutura do disco");
+
+                    Panel structurePanel = new Panel(new GridLayout(1));
+                    structurePanel.addComponent(textBox);
+
+                    Button closeButton = new Button("Fechar", () -> {
+                        structureWindow.close();
+                    });
+                    structurePanel.addComponent(closeButton);
+
+                    structureWindow.setComponent(structurePanel);
+
+                    new MultiWindowTextGUI(screen).addWindowAndWait(structureWindow);
                 } catch (Exception e) {
                     showMessage("Erro", "Não foi possível visualizar a estrutura " + e.getMessage(), screen);
                 }
